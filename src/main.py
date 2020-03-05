@@ -5,6 +5,7 @@ from os.path import dirname, abspath
 from copy import deepcopy
 from sacred import Experiment, SETTINGS
 from sacred.observers import FileStorageObserver
+from sacred.observers import MongoObserver
 from sacred.utils import apply_backspaces_and_linefeeds
 import sys
 import torch as th
@@ -94,6 +95,8 @@ if __name__ == '__main__':
     logger.info("Saving to FileStorageObserver in results/sacred.")
     file_obs_path = os.path.join(results_path, "sacred")
     ex.observers.append(FileStorageObserver.create(file_obs_path))
+    ex.observers.append(MongoObserver.create(url='localhost:27017',
+                                           db_name='sacred'))
 
     ex.run_commandline(params)
 
